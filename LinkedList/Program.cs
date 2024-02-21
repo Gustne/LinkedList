@@ -77,9 +77,9 @@ class LinkedList
         Node temp = chain;
         int count = 1;
 
-        while(count < position && temp != null)
+        while(count <= position && temp != null)
         {
-            if (count == position - 1)
+            if (count == position)
             {
 
                 temp.next = new Node(value, temp.next);
@@ -100,6 +100,12 @@ class LinkedList
     {
         Node temp = chain;
         int count = 1;
+
+        if (position == 1)
+        {
+            this.chain = chain.next;
+            return true;
+        }
 
         while (count < position && temp != null)
         {
