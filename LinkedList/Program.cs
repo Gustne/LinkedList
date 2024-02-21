@@ -77,16 +77,13 @@ class LinkedList
         Node temp = chain;
         int count = 1;
 
-        while(count <= position && temp != null)
+        while(temp != null)
         {
             if (count == position)
             {
-
                 temp.next = new Node(value, temp.next);
-
                 return true;
             }
-
             temp = temp.next;
             count++;
         }
@@ -107,11 +104,10 @@ class LinkedList
             return true;
         }
 
-        while (count < position && temp != null)
+        while (temp != null)
         {
             if (count == position - 1)
             {
-
                 temp.next = temp.next.next;
                 return true;
             }
