@@ -1,22 +1,53 @@
 ﻿//Author: Per Larsen
 
 using System;
-
-
+using System.Globalization;
 
 LinkedList linkedlist = new LinkedList();
 linkedlist.Add(3);
 linkedlist.Add(7);
 linkedlist.Add(5);
 linkedlist.Add(6);
+linkedlist.Add(43);
+linkedlist.Add(21);
+linkedlist.Add(223);
+linkedlist.Add(3);
+linkedlist.Add(5);
+linkedlist.Add(62);
+linkedlist.Add(16);
+linkedlist.Add(23);
+linkedlist.Add(75);
+linkedlist.Add(12);
 Console.WriteLine(linkedlist.InsertAfter(2, 125));
 linkedlist.PrintAll();
-Console.WriteLine(linkedlist.deleteElement(3));
+Console.WriteLine(linkedlist.DeleteElement(3));
 linkedlist.PrintAll();
 linkedlist.PrintUneven();
-Console.WriteLine(linkedlist.CalculateSum());
+Console.WriteLine($"Summen er :{linkedlist.CalculateSumAndAverage(out double average)}");
+Console.WriteLine($"gennemsnittet er {average}");
+
+linkedlist.AddUnderTop(1);
+Console.WriteLine($"her er første værdi {linkedlist.LoadFirst()}");
+Console.WriteLine($"slet første status {linkedlist.DeleteFirst()}");
+Console.WriteLine($"nu er første værdi: {linkedlist.LoadAndDeleteFirst()} og den er slettet");
 
 
+
+LinkedList newList = linkedlist.GetInterval(4, 9);
+Console.WriteLine("printer nu fra den nye liste med intervallet af den gamle");
+newList.PrintAll();
+
+LinkedList linkedlist2 = new LinkedList();
+linkedlist2.Add(3);
+linkedlist2.Add(4);
+linkedlist2.Add(5);
+
+Console.WriteLine("her samler vi de 2 lister og printer de samlede ud");
+LinkedList conCatlist = LinkedList.Concat(newList, linkedlist2);
+
+conCatlist.PrintAll();
+Console.WriteLine("her printer vi den i omvendt rækkefølge");
+conCatlist.PrintReverse();
 
 class LinkedList
 {
@@ -25,6 +56,11 @@ class LinkedList
     public LinkedList()
     {
         chain = null;
+    }
+
+    public LinkedList(Node chain)
+    {
+        this.chain = chain;
     }
 
     public void Add(int value)
@@ -59,16 +95,19 @@ class LinkedList
         }
     }
 
-    public int CalculateSum()
+    public int CalculateSumAndAverage(out double average)
     {
         int sum = 0;
+        int count = 0;
         Node temp = chain;
         while(temp != null)
         {
             sum += temp.data;
             temp = temp.next;
+            count++;
         }
 
+        average = (double) sum/count;
         return sum;
     }
 
@@ -93,7 +132,7 @@ class LinkedList
 
     }
 
-    public bool deleteElement(int position)
+    public bool DeleteElement(int position)
     {
         Node temp = chain;
         int count = 1;
@@ -118,6 +157,100 @@ class LinkedList
 
         return false;
     }
+
+    public bool AddUnderTop(int value)
+    {
+        return InsertAfter(1, value);
+    }
+
+    public int? LoadFirst()
+    {
+        if (chain != null)
+        {
+            return chain.data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public bool DeleteFirst()
+    {
+        return DeleteElement(1);
+    }
+
+    public int? LoadAndDeleteFirst()
+    {
+        if(chain != null)
+        {
+            int? value = LoadFirst();
+            DeleteFirst();
+            return value;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public LinkedList GetInterval(int start, int end)
+    {
+        Node temp = chain;
+        int count = 1;
+        Node newChain = null;
+
+        while (temp != null)
+        {
+            if (count == start)
+            {
+                newChain = temp;
+            }
+
+            if (count == end)
+            {
+                temp.next = null;
+                return new LinkedList(newChain);
+            }
+
+            temp = temp.next;
+            count++;
+        }
+
+        return new LinkedList();
+    }
+
+    public static LinkedList Concat(LinkedList list1, LinkedList list2)
+    {
+        Node chainOut = list1.chain;
+        Node temp = chainOut;
+
+        while (temp.next != null)
+        {
+            temp = temp.next;
+        }
+        temp.next = list2.chain;
+
+        return new LinkedList(chainOut);
+    }
+
+    public void PrintReverse()
+    {
+        LinkedList reverseList = new LinkedList();
+
+        Node temp = chain;
+
+        while (temp!= null)
+        {
+            reverseList.Add(temp.data);
+            temp = temp.next;
+        }
+
+        reverseList.PrintAll();
+    }
+
+
+
 }
 
 public class Node
@@ -137,3 +270,4 @@ public class Node
     public Node next { get; set; }
 
 }
+
