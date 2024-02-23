@@ -37,13 +37,8 @@ LinkedList newList = linkedlist.GetInterval(4, 9);
 Console.WriteLine("printer nu fra den nye liste med intervallet af den gamle");
 newList.PrintAll();
 
-LinkedList linkedlist2 = new LinkedList();
-linkedlist2.Add(3);
-linkedlist2.Add(4);
-linkedlist2.Add(5);
-
 Console.WriteLine("her samler vi de 2 lister og printer de samlede ud");
-LinkedList conCatlist = LinkedList.Concat(newList, linkedlist2);
+LinkedList conCatlist = LinkedList.Concat(linkedlist, newList);
 
 conCatlist.PrintAll();
 Console.WriteLine("her printer vi den i omvendt rækkefølge");
@@ -222,16 +217,26 @@ class LinkedList
 
     public static LinkedList Concat(LinkedList list1, LinkedList list2)
     {
-        Node chainOut = list1.chain;
-        Node temp = chainOut;
 
-        while (temp.next != null)
+        LinkedList reverseList = new LinkedList();
+
+        Node temp = list1.chain;
+
+        while (temp != null)
         {
+            reverseList.Add(temp.data);
             temp = temp.next;
         }
-        temp.next = list2.chain;
 
-        return new LinkedList(chainOut);
+        temp = reverseList.chain;
+
+        while(temp != null)
+        {
+            list2.Add(temp.data);
+            temp = temp.next;
+        }
+        
+        return list2;
     }
 
     public void PrintReverse()
