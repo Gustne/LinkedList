@@ -2,6 +2,7 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.ConstrainedExecution;
 
 LinkedList linkedlist = new LinkedList();
 linkedlist.Add(3);
@@ -153,11 +154,13 @@ class LinkedList
         return false;
     }
 
+
+    // AddUnderTop(int tal) der kan indsætte elementer efter det første element
     public bool AddUnderTop(int value)
     {
         return InsertAfter(1, value);
     }
-
+    //Int HentFørste()
     public int? LoadFirst()
     {
         if (chain != null)
@@ -169,12 +172,13 @@ class LinkedList
             return null;
         }
     }
-
+    //slet første
     public bool DeleteFirst()
     {
         return DeleteElement(1);
     }
 
+    // load and delete first
     public int? LoadAndDeleteFirst()
     {
         if(chain != null)
@@ -189,6 +193,11 @@ class LinkedList
         }
     }
 
+    //beregn snit ** er bygget ind i sum funktionen
+
+    //  Konstruer en ekstra metode til vores LL-linkedList programeksempel
+    //  der kan returnere en NY liste med de værdier der ligger i et bestemt
+    //  interval
     public LinkedList GetInterval(int start, int end)
     {
         Node temp = chain;
@@ -215,6 +224,9 @@ class LinkedList
         return new LinkedList();
     }
 
+
+    // sæt 2 lister sammen
+    // Man kan ikke bare sætte dem samme fordi det kan lave loops hvis du bruger en interval af en anden liste og sætter sammen
     public static LinkedList Concat(LinkedList list1, LinkedList list2)
     {
 
@@ -239,6 +251,8 @@ class LinkedList
         return list2;
     }
 
+
+    // Lav en funktion der printer listen ud i omvendt rækkefølge
     public void PrintReverse()
     {
         LinkedList reverseList = new LinkedList();
