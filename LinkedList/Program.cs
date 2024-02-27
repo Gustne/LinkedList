@@ -40,8 +40,9 @@ newList.PrintAll();
 
 Console.WriteLine("her samler vi de 2 lister og printer de samlede ud");
 LinkedList conCatlist = LinkedList.Concat(linkedlist, newList);
-
 conCatlist.PrintAll();
+
+
 Console.WriteLine("her printer vi den i omvendt rækkefølge");
 conCatlist.PrintReverse();
 
