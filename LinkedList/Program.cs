@@ -18,6 +18,7 @@ linkedlist.Add(62);
 linkedlist.Add(16);
 linkedlist.Add(23);
 linkedlist.Add(75);
+linkedlist.Add(7);
 linkedlist.Add(12);
 Console.WriteLine(linkedlist.InsertAfter(2, 125));
 linkedlist.PrintAll();
@@ -27,16 +28,23 @@ linkedlist.PrintUneven();
 Console.WriteLine($"Summen er :{linkedlist.CalculateSumAndAverage(out double average)}");
 Console.WriteLine($"gennemsnittet er {average}");
 
-linkedlist.AddUnderTop(1);
+linkedlist.AddUnderTop(23);
 Console.WriteLine($"her er første værdi {linkedlist.LoadFirst()}");
 Console.WriteLine($"slet første status {linkedlist.DeleteFirst()}");
 Console.WriteLine($"nu er første værdi: {linkedlist.LoadAndDeleteFirst()} og den er slettet");
 
 
 
+Console.WriteLine("Her tager vi så de noder ud med 4 og 9");
+LinkedList intervalList = linkedlist.GetValuesInInterval(4, 9);
+intervalList.PrintReverse();
+
+
 LinkedList newList = linkedlist.GetInterval(4, 9);
 Console.WriteLine("printer nu fra den nye liste med intervallet af den gamle");
 newList.PrintAll();
+
+
 
 Console.WriteLine("her samler vi de 2 lister og printer de samlede ud");
 LinkedList conCatlist = LinkedList.Concat(linkedlist, newList);
@@ -45,6 +53,26 @@ conCatlist.PrintAll();
 
 Console.WriteLine("her printer vi den i omvendt rækkefølge");
 conCatlist.PrintReverse();
+Console.WriteLine();
+Console.WriteLine("Her Starter de nye lister");
+Console.WriteLine();
+
+LinkedList sortedlist1 = new LinkedList();
+LinkedList sortedlist2 = new LinkedList();
+
+sortedlist1.Add(100);
+sortedlist1.Add(75);
+sortedlist1.Add(50);
+
+sortedlist2.Add(95);
+sortedlist2.Add(90);
+sortedlist2.Add(25);
+
+sortedlist1.PrintAll();
+
+LinkedList merged = LinkedList.Merge(sortedlist1 , sortedlist2);
+
+merged.PrintAll();
 
 class LinkedList
 {
@@ -199,6 +227,7 @@ class LinkedList
     //  Konstruer en ekstra metode til vores LL-linkedList programeksempel
     //  der kan returnere en NY liste med de værdier der ligger i et bestemt
     //  interval
+    // denne opgave kan forståes forskelligt om det er et interval af den orginale liste eller du får de noder der har værdier imellem x og y
     public LinkedList GetInterval(int start, int end)
     {
         Node temp = chain;
@@ -225,6 +254,23 @@ class LinkedList
         return new LinkedList();
     }
 
+    public LinkedList GetValuesInInterval(int min, int max)
+    {
+        Node temp = this.chain;
+        LinkedList intervalList = new LinkedList();
+
+        while (temp != null)
+        {
+            if (temp.data >= min && temp.data <= max)
+            {
+                intervalList.Add(temp.data);
+            }
+
+            temp = temp.next;
+        }
+
+        return intervalList;
+    }
 
     // sæt 2 lister sammen
     // Man kan ikke bare sætte dem samme fordi det kan lave loops hvis du bruger en interval af en anden liste og sætter sammen
@@ -269,6 +315,41 @@ class LinkedList
         reverseList.PrintAll();
     }
 
+
+    public static LinkedList Merge(LinkedList list1, LinkedList list2) 
+    {
+        LinkedList mergedList = new LinkedList();
+
+        Node temp1 = list1.chain;
+        Node temp2 = list2.chain;
+
+        while (temp1 != null && temp2 != null)
+        {
+            if (temp1 == null)
+            {
+                mergedList.Add(temp2.data);
+                temp2 = temp2.next;
+            }
+            else if (temp2 == null)
+            {
+                mergedList.Add(temp1.data);
+                temp1 = temp1.next;
+            }
+            else if (temp1.data <= temp2.data)
+            {
+                mergedList.Add(temp1.data);
+                temp1 = temp1.next;
+            }
+            else
+            {
+                mergedList.Add(temp2.data);
+                temp2 = temp2.next;
+            }
+        }
+
+        return mergedList;
+
+    }
 
 
 }
